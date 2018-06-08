@@ -1,7 +1,7 @@
 {
   "name": "@atomist/sdm-pack-sloc",
   "version": "0.1.0",
-  "description": "Extension Pack for an Atomist SDM to integrate SLOC tool",
+  "description": "Extension Pack for an Atomist SDM to integrate sloc",
   "author": {
     "name": "Atomist, Inc."
   },
