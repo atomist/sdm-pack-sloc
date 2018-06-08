@@ -1,0 +1,1 @@
+export { SlocSupport } from "./sloc";
