@@ -33,7 +33,6 @@ const pj = require("./package.json");
 /**
  * Commmand to display lines of code in current project
  * to Slack, across understood languages.
- * @type {HandleCommand<EditOneOrAllParameters>}
  */
 export const SlocCommand: EditorRegistration = {
     name: "sloc",
@@ -45,7 +44,7 @@ export const SlocSupport: ExtensionPack = {
     name: pj.name,
     vendor: pj.author.name,
     version: pj.version,
-    configure: sdm => sdm.addEditors(SlocCommand),
+    configure: sdm => sdm.addEditor(SlocCommand),
 };
 
 async function computeSloc(p: Project, ctx: HandlerContext, params: EmptyParameters) {

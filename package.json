@@ -31,7 +31,7 @@
     "@atomist/sdm": "^0.3.0"
   },
   "devDependencies": {
-    "@atomist/sdm": "0.3.0-nortissej.break-out-api.20180624192958",
+    "@atomist/sdm": "https://r.atomist.com/296205773",
     "@atomist/automation-client": "0.17.2-20180605032022",
     "@types/lodash": "^4.14.109",
     "@types/mocha": "^2.2.48",
