@@ -22,6 +22,7 @@ import {
     EmptyParameters,
     ExtensionPack,
 } from "@atomist/sdm";
+import { metadata } from "@atomist/sdm/api-helper/misc/extensionPack";
 import {
     LanguageReport,
     reportForLanguages,
@@ -41,9 +42,7 @@ export const SlocCommand: EditorRegistration = {
 };
 
 export const SlocSupport: ExtensionPack = {
-    name: pj.name,
-    vendor: pj.author.name,
-    version: pj.version,
+    ...metadata(),
     configure: sdm => sdm.addEditor(SlocCommand),
 };
 
