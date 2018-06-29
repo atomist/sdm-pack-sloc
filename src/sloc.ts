@@ -28,9 +28,6 @@ import {
     reportForLanguages,
  } from "./slocReport";
 
- // tslint:disable-next-line:no-var-requires
-const pj = require("./package.json");
-
 /**
  * Commmand to display lines of code in current project
  * to Slack, across understood languages.
