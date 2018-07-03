@@ -18,7 +18,7 @@ import { HandlerContext } from "@atomist/automation-client";
 import { RemoteRepoRef } from "@atomist/automation-client/operations/common/RepoId";
 import { Project } from "@atomist/automation-client/project/Project";
 import {
-    EditorRegistration,
+    CodeTransformRegistration,
     EmptyParameters,
     ExtensionPack,
 } from "@atomist/sdm";
@@ -31,16 +31,17 @@ import {
 /**
  * Commmand to display lines of code in current project
  * to Slack, across understood languages.
+ * Note that this does not actually modify anything.
  */
-export const SlocCommand: EditorRegistration = {
+export const SlocCommand: CodeTransformRegistration = {
     name: "sloc",
-    createEditor: () => computeSloc,
+    transform: computeSloc,
     intent: ["compute sloc", "sloc"],
 };
 
 export const SlocSupport: ExtensionPack = {
     ...metadata(),
-    configure: sdm => sdm.addEditor(SlocCommand),
+    configure: sdm => sdm.addCodeTransformCommand(SlocCommand),
 };
 
 async function computeSloc(p: Project, ctx: HandlerContext, params: EmptyParameters) {
