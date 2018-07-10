@@ -48,7 +48,7 @@ export const SlocCommand: CodeInspectionRegistration<LanguagesReport> = {
 
 export const SlocSupport: ExtensionPack = {
     ...metadata(),
-    configure: sdm => sdm.addCodeTransformCommand(SlocCommand),
+    configure: sdm => sdm.addCodeInspectionCommand(SlocCommand),
 };
 
 function formatLanguageReport(report: LanguageReport): string {
