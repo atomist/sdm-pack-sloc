@@ -14,28 +14,35 @@
  * limitations under the License.
  */
 
-import { HandlerContext } from "@atomist/automation-client";
 import { RemoteRepoRef } from "@atomist/automation-client/operations/common/RepoId";
 import { Project } from "@atomist/automation-client/project/Project";
-import {
-    CodeTransformRegistration,
-    EmptyParameters,
-    ExtensionPack,
-} from "@atomist/sdm";
+import { CodeInspection, CodeInspectionRegistration, ExtensionPack, SdmContext } from "@atomist/sdm";
 import { metadata } from "@atomist/sdm/api-helper/misc/extensionPack";
-import {
-    LanguageReport,
-    reportForLanguages,
- } from "./slocReport";
+import { LanguageReport, LanguagesReport, reportForLanguages } from "./slocReport";
+
+/**
+ * Inspection that reports on languages
+ * @param {Project} p
+ * @param {SdmContext} ci
+ * @return {Promise<LanguagesReport>}
+ * @constructor
+ */
+export const SlocInspection: CodeInspection<LanguagesReport> = async (p: Project, ci: SdmContext) => {
+    const report = await reportForLanguages(p);
+    await ci.context.messageClient.respond(`Project \`${p.id.owner}:${p.id.repo}\`: ${(p.id as RemoteRepoRef).url}`);
+    const message = report.relevantLanguageReports.map(formatLanguageReport).join("\n");
+    await ci.context.messageClient.respond(message);
+    return report;
+};
 
 /**
  * Commmand to display lines of code in current project
  * to Slack, across understood languages.
  * Note that this does not actually modify anything.
  */
-export const SlocCommand: CodeTransformRegistration = {
+export const SlocCommand: CodeInspectionRegistration<LanguagesReport> = {
     name: "sloc",
-    transform: computeSloc,
+    inspection: SlocInspection,
     intent: ["compute sloc", "sloc"],
 };
 
@@ -43,14 +50,6 @@ export const SlocSupport: ExtensionPack = {
     ...metadata(),
     configure: sdm => sdm.addCodeTransformCommand(SlocCommand),
 };
-
-async function computeSloc(p: Project, ctx: HandlerContext, params: EmptyParameters) {
-    const report = await reportForLanguages(p);
-    await ctx.messageClient.respond(`Project \`${p.id.owner}:${p.id.repo}\`: ${(p.id as RemoteRepoRef).url}`);
-    const message = report.relevantLanguageReports.map(formatLanguageReport).join("\n");
-    await ctx.messageClient.respond(message);
-    return p;
-}
 
 function formatLanguageReport(report: LanguageReport): string {
     return `*${report.language.name}*: ${Number(report.stats.total).toLocaleString()} loc, ` +

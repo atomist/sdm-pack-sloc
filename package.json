@@ -1,6 +1,6 @@
 {
   "name": "@atomist/sdm-pack-sloc",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Extension Pack for an Atomist SDM to integrate sloc",
   "author": {
     "name": "Atomist, Inc."
@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@atomist/automation-client": "0.17.4-20180628204109",
-    "@atomist/sdm": "https://r.atomist.com/1162612348",
+    "@atomist/sdm": "https://r.atomist.com/1517823952",
     "@types/lodash": "^4.14.109",
     "@types/mocha": "^2.2.48",
     "@types/node": "^9.4.1",
