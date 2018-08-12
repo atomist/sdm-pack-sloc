@@ -29,8 +29,8 @@ import { LanguageReport, LanguagesReport, reportForLanguages } from "./slocRepor
  */
 export const SlocInspection: CodeInspection<LanguagesReport> = async (p: Project, ci: SdmContext) => {
     const report = await reportForLanguages(p);
-    await ci.context.messageClient.respond(`Project \`${p.id.owner}:${p.id.repo}\`: ${(p.id as RemoteRepoRef).url}`);
-    const message = report.relevantLanguageReports.map(formatLanguageReport).join("\n");
+    const message = `Project \`${p.id.owner}:${p.id.repo}\`: ${(p.id as RemoteRepoRef).url}\n` +
+        report.relevantLanguageReports.map(formatLanguageReport).map(s => "* " + s).join("\n");
     await ci.context.messageClient.respond(message);
     return report;
 };
