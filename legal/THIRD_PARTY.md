@@ -8,16 +8,8 @@ This page details all runtime OSS dependencies of `@atomist/sdm-pack-sloc`.
 
 | License | Count |
 |---------|-------|
-|[Apache-2.0](#apache-20)|1|
 |[ISC](#isc)|3|
 |[MIT](#mit)|19|
-
-#### Apache-2.0
-Apache License 2.0 - [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
-
-| Name | Version | Publisher | Repository |
-|------|---------|-----------|------------|
-|`@atomist/sdm-pack-sloc`|`0.1.6`|Atomist, Inc.|[https://github.com/atomist/sdm-pack-sloc](https://github.com/atomist/sdm-pack-sloc)|
 
 #### ISC
 ISC License - [https://www.isc.org/downloads/software-support-policy/isc-license/](https://www.isc.org/downloads/software-support-policy/isc-license/)
