@@ -29,8 +29,8 @@
     "sloc": "^0.2.0"
   },
   "peerDependencies": {
-    "@atomist/automation-client": "^0.17.1",
-    "@atomist/sdm": "^0.3.0"
+    "@atomist/automation-client": "*",
+    "@atomist/sdm": "*"
   },
   "devDependencies": {
     "@atomist/automation-client": "1.0.0-M.1",
