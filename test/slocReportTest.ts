@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-import { InMemoryFile } from "@atomist/automation-client/project/mem/InMemoryFile";
-import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
+import {
+    InMemoryFile,
+    InMemoryProject,
+} from "@atomist/automation-client";
 import * as assert from "power-assert";
 import {
     JavaLanguage,
     ScalaLanguage,
     TypeScriptLanguage,
-} from "../src/languages";
+} from "../lib/languages";
 import {
     reportForLanguage,
     reportForLanguages,
-} from "../src/slocReport";
+} from "../lib/slocReport";
 
 describe("reportForLanguage", () => {
 

@@ -14,10 +14,17 @@
  * limitations under the License.
  */
 
-import { RemoteRepoRef } from "@atomist/automation-client/operations/common/RepoId";
-import { Project } from "@atomist/automation-client/project/Project";
-import { CodeInspection, CodeInspectionRegistration, ExtensionPack, SdmContext } from "@atomist/sdm";
-import { metadata } from "@atomist/sdm/api-helper/misc/extensionPack";
+import {
+    Project,
+    RemoteRepoRef,
+} from "@atomist/automation-client";
+import {
+    CodeInspection,
+    CodeInspectionRegistration,
+    ExtensionPack,
+    metadata,
+    SdmContext,
+} from "@atomist/sdm";
 import { LanguageReport, LanguagesReport, reportForLanguages } from "./slocReport";
 
 /**
