@@ -23,11 +23,11 @@ import {
     JavaLanguage,
     ScalaLanguage,
     TypeScriptLanguage,
-} from "../src/languages";
+} from "../lib/languages";
 import {
     reportForLanguage,
     reportForLanguages,
-} from "../src/slocReport";
+} from "../lib/slocReport";
 
 describe("reportForLanguage", () => {
 
