@@ -25,7 +25,11 @@ import {
     metadata,
     SdmContext,
 } from "@atomist/sdm";
-import { LanguageReport, LanguagesReport, reportForLanguages } from "./slocReport";
+import {
+    LanguageReport,
+    LanguagesReport,
+    reportForLanguages,
+} from "./slocReport";
 
 /**
  * Inspection that reports on languages
