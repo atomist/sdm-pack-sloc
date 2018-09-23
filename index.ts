@@ -20,13 +20,13 @@ import {
     metadata,
     PushTest,
 } from "@atomist/sdm";
-import { lineCountFingerprinter } from "./codemetrics/CodeMetrics";
-import { SlocCommand } from "./slocCommand";
-import { LanguageReportRequest } from "./slocReport";
+import { lineCountFingerprinter } from "./lib/codemetrics/CodeMetrics";
+import { SlocCommand } from "./lib/slocCommand";
+import { LanguageReportRequest } from "./lib/slocReport";
 
-export { CodeMetrics } from "./codemetrics/CodeMetrics";
+export { CodeMetrics } from "./lib/codemetrics/CodeMetrics";
 
-export { LanguageReport, LanguagesReport, LanguageReportRequest } from "./slocReport";
+export { LanguageReport, LanguagesReport, LanguageReportRequest } from "./lib/slocReport";
 
 /**
  * Extension pack to add codeMetrics commands to a machine
