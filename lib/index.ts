@@ -14,5 +14,32 @@
  * limitations under the License.
  */
 
-export { SlocSupport } from "./sloc";
-export { SlocInspection } from "./sloc";
+import { ExtensionPack, PushTest } from "@atomist/sdm";
+import { metadata } from "@atomist/sdm";
+import { Fingerprint } from "@atomist/sdm";
+import { lineCountFingerprinter } from "./codemetrics/CodeMetrics";
+import { SlocCommand } from "./slocCommand";
+
+export { CodeMetrics } from "./codemetrics/CodeMetrics";
+
+/**
+ * Extension pack to add codeMetrics commands to a machine
+ * and optionally, fingerprint with lines of code after every push.
+ * @param fingerprint if this is set, automatic fingerprinting will
+ * happen on every push
+ */
+export function codeMetrics(
+    fingerprint?: {
+        pushTest?: PushTest,
+        fingerprintGoal: Fingerprint,
+    }): ExtensionPack {
+    return {
+        ...metadata(),
+        configure: sdm => {
+            sdm.addCodeInspectionCommand(SlocCommand);
+            if (!!fingerprint) {
+                fingerprint.fingerprintGoal.with(lineCountFingerprinter(fingerprint.pushTest));
+            }
+        },
+    };
+}

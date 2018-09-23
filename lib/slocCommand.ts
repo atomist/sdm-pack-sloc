@@ -39,15 +39,11 @@ import {
  * @constructor
  */
 export const SlocInspection: CodeInspection<LanguagesReport> = async (p: Project, ci: SdmContext) => {
-    const report = await reportForLanguages(p);
-    const message = `Project \`${p.id.owner}:${p.id.repo}\`: ${(p.id as RemoteRepoRef).url}\n` +
-        report.relevantLanguageReports.map(formatLanguageReport).map(s => "* " + s).join("\n");
-    await ci.context.messageClient.respond(message);
-    return report;
+    return reportForLanguages(p);
 };
 
 /**
- * Commmand to display lines of code in current project
+ * Command to display lines of code in current project or projects
  * to Slack, across understood languages.
  * Note that this does not actually modify anything.
  */
@@ -55,11 +51,11 @@ export const SlocCommand: CodeInspectionRegistration<LanguagesReport> = {
     name: "sloc",
     inspection: SlocInspection,
     intent: ["compute sloc", "sloc"],
-};
-
-export const SlocSupport: ExtensionPack = {
-    ...metadata(),
-    configure: sdm => sdm.addCodeInspectionCommand(SlocCommand),
+    react: async (results, ci) => {
+        const message = `Project \`${p.id.owner}:${p.id.repo}\`: ${(p.id as RemoteRepoRef).url}\n` +
+            report.relevantLanguageReports.map(formatLanguageReport).map(s => "* " + s).join("\n");
+        await ci.context.messageClient.respond(message);
+    },
 };
 
 function formatLanguageReport(report: LanguageReport): string {

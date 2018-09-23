@@ -1,7 +1,7 @@
 {
   "name": "@atomist/sdm-pack-sloc",
   "version": "1.0.0",
-  "description": "Extension Pack for an Atomist SDM to integrate sloc",
+  "description": "Extension Pack for an Atomist SDM to integrate code metrics",
   "author": {
     "name": "Atomist",
     "email": "support@atomist.com",
