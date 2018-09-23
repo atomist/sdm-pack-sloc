@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-import { ExtensionPack, PushTest } from "@atomist/sdm";
-import { metadata } from "@atomist/sdm";
-import { Fingerprint } from "@atomist/sdm";
+import { ExtensionPack, Fingerprint, metadata, PushTest } from "@atomist/sdm";
 import { lineCountFingerprinter } from "./codemetrics/CodeMetrics";
 import { SlocCommand } from "./slocCommand";
 import { LanguageReportRequest } from "./slocReport";

@@ -16,10 +16,10 @@
 
 import { File, Project } from "@atomist/automation-client";
 
+import { gatherFromFiles } from "@atomist/automation-client/lib/project/util/projectUtils";
 import * as _ from "lodash";
 import * as sloc from "sloc";
 import { AllLanguages } from "./languages";
-import { gatherFromFiles } from "@atomist/automation-client/lib/project/util/projectUtils";
 
 export interface Language {
 
@@ -130,7 +130,6 @@ export interface LanguageReportRequest {
 export async function reportForLanguage(p: Project, request: LanguageReportRequest): Promise<LanguageReport> {
     const extension = request.language.extensions[0];
     const globs = request.language.extensions.map(ext => `**/*.${ext}`);
-    console.log("GLOB is " + globs)
     const fileReports = await gatherFromFiles<FileReport>(p, globs, async f => {
         const content = await f.getContent();
         const stats = sloc(content, extension);
