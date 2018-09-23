@@ -15,9 +15,9 @@
  */
 
 import {
-    InMemoryFile,
     InMemoryProject,
-} from "@atomist/automation-client";
+    InMemoryProjectFile,
+} from "@atomist/sdm";
 import * as assert from "power-assert";
 import {
     JavaLanguage,
@@ -33,7 +33,7 @@ import {
 describe("reportForLanguage", () => {
 
     it("should work on TypeScript", async () => {
-        const p = InMemoryProject.of(new InMemoryFile("thing.ts", "// Comment\n\nconst x = 10;\n"));
+        const p = InMemoryProject.of(new InMemoryProjectFile("thing.ts", "// Comment\n\nconst x = 10;\n"));
         const r = await reportForLanguage(p, {language: TypeScriptLanguage });
         assert.equal(r.fileReports.length, 1);
         const f0 = r.fileReports[0];
@@ -44,7 +44,7 @@ describe("reportForLanguage", () => {
     });
 
     it("should work on Java", async () => {
-        const p = InMemoryProject.of(new InMemoryFile("src/Thing.java", "// Comment\n\nclass Foo{}\n"));
+        const p = InMemoryProject.of(new InMemoryProjectFile("src/Thing.java", "// Comment\n\nclass Foo{}\n"));
         const r = await reportForLanguage(p, { language: JavaLanguage});
         assert.equal(r.fileReports.length, 1);
         const f0 = r.fileReports[0];
@@ -55,7 +55,7 @@ describe("reportForLanguage", () => {
     });
 
     it("should work on YAML", async () => {
-        const p = InMemoryProject.of(new InMemoryFile("junk.yml", "yaml : garbage"));
+        const p = InMemoryProject.of(new InMemoryProjectFile("junk.yml", "yaml : garbage"));
         const r = await reportForLanguage(p, {language: YamlLanguage });
         assert.equal(r.fileReports.length, 1);
         const f0 = r.fileReports[0];
@@ -65,8 +65,8 @@ describe("reportForLanguage", () => {
 
     it("should work on Java and TypeScript", async () => {
         const p = InMemoryProject.of(
-            new InMemoryFile("thing.ts", "// Comment\n\nconst x = 10;\n"),
-            new InMemoryFile("src/Thing.java", "// Comment\n\nclass Foo{}\n"),
+            new InMemoryProjectFile("thing.ts", "// Comment\n\nconst x = 10;\n"),
+            new InMemoryProjectFile("src/Thing.java", "// Comment\n\nclass Foo{}\n"),
         );
         const r = await reportForLanguages(p, [{ language: JavaLanguage}, { language: TypeScriptLanguage}]);
         assert.equal(r.languageReports.length, 2);
@@ -77,9 +77,9 @@ describe("reportForLanguage", () => {
 
     it("should find default languages", async () => {
         const p = InMemoryProject.of(
-            new InMemoryFile("Thing.scala", "// Comment\n\nclass Foo {}\n"),
-            new InMemoryFile("src/Thing.java", "// Comment\n\nclass Foo{}\n"),
-            new InMemoryFile("junk.yml", "yaml: junk"),
+            new InMemoryProjectFile("Thing.scala", "// Comment\n\nclass Foo {}\n"),
+            new InMemoryProjectFile("src/Thing.java", "// Comment\n\nclass Foo{}\n"),
+            new InMemoryProjectFile("junk.yml", "yaml: junk"),
         );
         const r = await reportForLanguages(p);
         assert(r.languageReports.length > 3);

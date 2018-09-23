@@ -14,12 +14,8 @@
  * limitations under the License.
  */
 
-import {
-    File,
-    Project,
-} from "@atomist/automation-client";
+import { gatherFromFiles, Project, ProjectFile } from "@atomist/sdm";
 
-import { gatherFromFiles } from "@atomist/automation-client/lib/project/util/projectUtils";
 import * as _ from "lodash";
 import * as sloc from "sloc";
 import { AllLanguages } from "./languages";
@@ -63,7 +59,7 @@ export interface FileReport {
 
     stats: CodeStats;
 
-    file: File;
+    file: ProjectFile;
 
 }
 
