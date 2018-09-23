@@ -14,25 +14,43 @@
  * limitations under the License.
  */
 
-import {
-    File,
-    Project,
-    saveFromFilesAsync,
-} from "@atomist/automation-client";
+import { File, Project } from "@atomist/automation-client";
 
 import * as _ from "lodash";
 import * as sloc from "sloc";
 import { AllLanguages } from "./languages";
+import { gatherFromFiles } from "@atomist/automation-client/lib/project/util/projectUtils";
 
 export interface Language {
+
     name: string;
+
+    /**
+     * First extension must be definitive one to pass to SLOC
+     */
     extensions: string[];
 }
 
+/**
+ * Statistics about a particular language. See sloc API for further information
+ */
 export interface CodeStats {
+
     language: Language;
+
+    /**
+     * Total number of lines
+     */
     total: number;
+
+    /**
+     * Number of lines of source code
+     */
     source: number;
+
+    /**
+     * Number of comment lines
+     */
     comment: number;
     single: number;
     block: number;
@@ -110,12 +128,10 @@ export interface LanguageReportRequest {
  * @return {Promise<LanguageReport>}
  */
 export async function reportForLanguage(p: Project, request: LanguageReportRequest): Promise<LanguageReport> {
-    if (request.language.extensions.length > 1) {
-        throw new Error("Only one extension supported in " + JSON.stringify(request.language));
-    }
     const extension = request.language.extensions[0];
-    const globToUse = request.glob || `**/*.${extension}`;
-    const fileReports = await saveFromFilesAsync<FileReport>(p, globToUse, async f => {
+    const globs = request.language.extensions.map(ext => `**/*.${ext}`);
+    console.log("GLOB is " + globs)
+    const fileReports = await gatherFromFiles<FileReport>(p, globs, async f => {
         const content = await f.getContent();
         const stats = sloc(content, extension);
         return {
@@ -128,7 +144,7 @@ export async function reportForLanguage(p: Project, request: LanguageReportReque
 }
 
 export async function reportForLanguages(p: Project,
-                                         requests: LanguageReportRequest[] = AllLanguages.map(language => ({language}))): Promise<LanguagesReport> {
+                                         requests: LanguageReportRequest[] = AllLanguages.map(language => ({ language }))): Promise<LanguagesReport> {
     const languageReports = await Promise.all(requests.map(r => reportForLanguage(p, r)));
     return new LanguagesReport(languageReports);
 }

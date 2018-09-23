@@ -27,6 +27,8 @@ export const GoLanguage: Language = {name: "Go", extensions: ["go"]};
 export const TypeScriptLanguage: Language = {name: "TypeScript", extensions: ["ts"]};
 export const JavaScriptLanguage: Language = {name: "JavaScript", extensions: ["js"]};
 
+export const YamlLanguage: Language = {name: "YAML", extensions: [ "yaml", "yml"]};
+
 /**
  * All languages for which we can compute statistics
  * @type {Language[]}
@@ -35,5 +37,5 @@ export const AllLanguages = [
     JavaLanguage, KotlinLanguage, ClojureLanguage, ScalaLanguage,
     TypeScriptLanguage, JavaScriptLanguage,
     PythonLanguage, RustLanguage,
-    GoLanguage,
+    GoLanguage, YamlLanguage,
 ];

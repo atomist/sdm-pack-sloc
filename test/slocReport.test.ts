@@ -22,7 +22,7 @@ import * as assert from "power-assert";
 import {
     JavaLanguage,
     ScalaLanguage,
-    TypeScriptLanguage,
+    TypeScriptLanguage, YamlLanguage,
 } from "../lib/languages";
 import {
     reportForLanguage,
@@ -53,6 +53,15 @@ describe("reportForLanguage", () => {
         assert.equal(f0.stats.source, 1);
     });
 
+    it("should work on YAML", async () => {
+        const p = InMemoryProject.of(new InMemoryFile("junk.yml", "yaml : garbage"));
+        const r = await reportForLanguage(p, {language: YamlLanguage });
+        assert.equal(r.fileReports.length, 1);
+        const f0 = r.fileReports[0];
+        assert.equal(f0.stats.total, 1);
+        assert.equal(f0.stats.source, 1);
+    });
+
     it("should work on Java and TypeScript", async () => {
         const p = InMemoryProject.of(
             new InMemoryFile("thing.ts", "// Comment\n\nconst x = 10;\n"),
@@ -69,12 +78,15 @@ describe("reportForLanguage", () => {
         const p = InMemoryProject.of(
             new InMemoryFile("Thing.scala", "// Comment\n\nclass Foo {}\n"),
             new InMemoryFile("src/Thing.java", "// Comment\n\nclass Foo{}\n"),
+            new InMemoryFile("junk.yml", "yaml: junk"),
         );
         const r = await reportForLanguages(p);
-        assert(r.languageReports.length > 2);
-        assert.equal(r.relevantLanguageReports.length , 2);
+        assert(r.languageReports.length > 3);
+        assert.equal(r.relevantLanguageReports.length, 3);
         assert(r.languageReports.some(l => l.language === JavaLanguage));
         assert(r.relevantLanguageReports.some(l => l.language === ScalaLanguage));
+        assert(r.relevantLanguageReports.some(l => l.language === ScalaLanguage));
+
     });
 
 });

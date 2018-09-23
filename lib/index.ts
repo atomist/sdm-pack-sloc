@@ -19,8 +19,11 @@ import { metadata } from "@atomist/sdm";
 import { Fingerprint } from "@atomist/sdm";
 import { lineCountFingerprinter } from "./codemetrics/CodeMetrics";
 import { SlocCommand } from "./slocCommand";
+import { LanguageReportRequest } from "./slocReport";
 
 export { CodeMetrics } from "./codemetrics/CodeMetrics";
+
+export { LanguageReport, LanguagesReport, LanguageReportRequest } from "./slocReport";
 
 /**
  * Extension pack to add codeMetrics commands to a machine
