@@ -63,10 +63,17 @@ export interface FileReport {
 
 }
 
+export interface LanguageStats {
+
+    language: Language;
+
+    stats: CodeStats;
+}
+
 /**
  * Report about a project's files in a given language
  */
-export class LanguageReport {
+export class LanguageReport implements LanguageStats {
 
     constructor(public language: Language, public fileReports: FileReport[]) {
     }
@@ -76,16 +83,26 @@ export class LanguageReport {
      * @return {CodeStats[]}
      */
     get stats(): CodeStats {
-        return {
-            language: this.language,
-            total: _.sum(this.fileReports.map(r => r.stats.total)),
-            source: _.sum(this.fileReports.map(r => r.stats.source)),
-            comment: _.sum(this.fileReports.map(r => r.stats.comment)),
-            single: _.sum(this.fileReports.map(r => r.stats.single)),
-            block: _.sum(this.fileReports.map(r => r.stats.block)),
-        };
+        return consolidate(this.language, this.fileReports.map(fr => fr.stats));
     }
 
+}
+
+/**
+ * Consolidate the given stats for a particular language
+ * @param {Language} language
+ * @param {CodeStats[]} stats
+ * @return {CodeStats}
+ */
+export function consolidate(language: Language, stats: CodeStats[]): CodeStats {
+    return {
+        language,
+        total: _.sum(stats.map(r => r.total)),
+        source: _.sum(stats.map(r => r.source)),
+        comment: _.sum(stats.map(r => r.comment)),
+        single: _.sum(stats.map(r => r.single)),
+        block: _.sum(stats.map(r => r.block)),
+    };
 }
 
 /**

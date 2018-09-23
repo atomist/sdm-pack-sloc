@@ -20,26 +20,29 @@ import {
 } from "@atomist/automation-client";
 import {
     CodeInspection,
-    CodeInspectionRegistration,
+    CodeInspectionRegistration, CodeInspectionResult,
     ExtensionPack,
     metadata,
     SdmContext,
 } from "@atomist/sdm";
 import {
+    consolidate,
     LanguageReport,
-    LanguagesReport,
+    LanguagesReport, LanguageStats,
     reportForLanguages,
 } from "./slocReport";
 
 /**
- * Inspection that reports on languages
+ * Inspection that reports on languages used in a project
  * @param {Project} p
  * @param {SdmContext} ci
  * @return {Promise<LanguagesReport>}
  * @constructor
  */
 export const SlocInspection: CodeInspection<LanguagesReport> = async (p: Project, ci: SdmContext) => {
-    return reportForLanguages(p);
+    const result = await reportForLanguages(p);
+    await ci.addressChannels(reportForProject({ repoId: p.id, result }));
+    return result;
 };
 
 /**
@@ -51,15 +54,44 @@ export const SlocCommand: CodeInspectionRegistration<LanguagesReport> = {
     name: "sloc",
     inspection: SlocInspection,
     intent: ["compute sloc", "sloc"],
-    react: async (results, ci) => {
-        const message = `Project \`${p.id.owner}:${p.id.repo}\`: ${(p.id as RemoteRepoRef).url}\n` +
-            report.relevantLanguageReports.map(formatLanguageReport).map(s => "* " + s).join("\n");
+    onInspectionResults: async (results, ci) => {
+        // Aggregate the results
+        // We'll have all languages for each project
+        const languages = results[0].result.languagesScanned;
+        // Totals for all languages
+        const consolidated: LanguageStats[] = languages.map(language => {
+            const stats = consolidate(language,
+                results.map(r => r.result.languageReports.find(l => l.language === language).stats));
+            return {
+                language,
+                stats,
+            };
+        });
+        let message = `Overall report across ${results.length} projects\n`;
+        for (const langStats of consolidated) {
+            message += formatLanguageStats(langStats);
+            message += "\n";
+        }
         await ci.context.messageClient.respond(message);
     },
 };
 
+/**
+ * Format a string for the report for the project
+ * @param {CodeInspectionResult<LanguagesReport>} result
+ * @return {string}
+ */
+function reportForProject(result: CodeInspectionResult<LanguagesReport>): string {
+    return `Project \`${result.repoId.owner}:${result.repoId.repo}\`: ${result.repoId.url}\n` +
+        result.result.relevantLanguageReports.map(formatLanguageReport).map(s => "* " + s).join("\n");
+}
+
 function formatLanguageReport(report: LanguageReport): string {
+    return formatLanguageStats(report) +
+        `, ${Number(report.fileReports.length).toLocaleString()} \`.${report.language.extensions[0]}\` files`;
+}
+
+function formatLanguageStats(report: LanguageStats): string {
     return `*${report.language.name}*: ${Number(report.stats.total).toLocaleString()} loc, ` +
-        `${Number(report.stats.comment).toLocaleString()} in comments, ` +
-        `${Number(report.fileReports.length).toLocaleString()} \`.${report.language.extensions[0]}\` files`;
+        `${Number(report.stats.comment).toLocaleString()} in comments`;
 }
