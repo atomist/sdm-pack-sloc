@@ -15,9 +15,20 @@
  */
 
 import { Project } from "@atomist/automation-client";
-import { CodeInspection, CodeInspectionRegistration, CodeInspectionResult, SdmContext } from "@atomist/sdm";
+import {
+    CodeInspection,
+    CodeInspectionRegistration,
+    CodeInspectionResult,
+    SdmContext,
+} from "@atomist/sdm";
 import * as _ from "lodash";
-import { consolidate, LanguageReport, LanguagesReport, LanguageStats, reportForLanguages } from "./slocReport";
+import {
+    consolidate,
+    LanguageReport,
+    LanguagesReport,
+    LanguageStats,
+    reportForLanguages,
+} from "./slocReport";
 
 /**
  * Inspection that reports on languages used in a project
