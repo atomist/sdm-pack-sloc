@@ -20,7 +20,8 @@ import {
 } from "@atomist/automation-client";
 import {
     CodeInspection,
-    CodeInspectionRegistration, CodeInspectionResult,
+    CodeInspectionRegistration,
+    CodeInspectionResult,
     ExtensionPack,
     metadata,
     SdmContext,
@@ -28,7 +29,8 @@ import {
 import {
     consolidate,
     LanguageReport,
-    LanguagesReport, LanguageStats,
+    LanguagesReport,
+    LanguageStats,
     reportForLanguages,
 } from "./slocReport";
 

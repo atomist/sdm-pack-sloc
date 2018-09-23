@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-import { gatherFromFiles, Project, ProjectFile } from "@atomist/sdm";
+import {
+    gatherFromFiles,
+    Project,
+    ProjectFile,
+} from "@atomist/sdm";
 
 import * as _ from "lodash";
 import * as sloc from "sloc";
