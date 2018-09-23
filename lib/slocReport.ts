@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-import { File, Project } from "@atomist/automation-client";
+import {
+    File,
+    Project,
+} from "@atomist/automation-client";
 
 import { gatherFromFiles } from "@atomist/automation-client/lib/project/util/projectUtils";
 import * as _ from "lodash";

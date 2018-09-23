@@ -22,7 +22,8 @@ import * as assert from "power-assert";
 import {
     JavaLanguage,
     ScalaLanguage,
-    TypeScriptLanguage, YamlLanguage,
+    TypeScriptLanguage,
+    YamlLanguage,
 } from "../lib/languages";
 import {
     reportForLanguage,
