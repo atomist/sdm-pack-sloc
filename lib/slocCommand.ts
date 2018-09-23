@@ -14,25 +14,10 @@
  * limitations under the License.
  */
 
-import {
-    Project,
-    RemoteRepoRef,
-} from "@atomist/automation-client";
-import {
-    CodeInspection,
-    CodeInspectionRegistration,
-    CodeInspectionResult,
-    ExtensionPack,
-    metadata,
-    SdmContext,
-} from "@atomist/sdm";
-import {
-    consolidate,
-    LanguageReport,
-    LanguagesReport,
-    LanguageStats,
-    reportForLanguages,
-} from "./slocReport";
+import { Project } from "@atomist/automation-client";
+import { CodeInspection, CodeInspectionRegistration, CodeInspectionResult, SdmContext } from "@atomist/sdm";
+import * as _ from "lodash";
+import { consolidate, LanguageReport, LanguagesReport, LanguageStats, reportForLanguages } from "./slocReport";
 
 /**
  * Inspection that reports on languages used in a project
@@ -50,7 +35,7 @@ export const SlocInspection: CodeInspection<LanguagesReport> = async (p: Project
 /**
  * Command to display lines of code in current project or projects
  * to Slack, across understood languages.
- * Note that this does not actually modify anything.
+ * Also displays aggregate data.
  */
 export const SlocCommand: CodeInspectionRegistration<LanguagesReport> = {
     name: "sloc",
@@ -68,11 +53,11 @@ export const SlocCommand: CodeInspectionRegistration<LanguagesReport> = {
                 language,
                 stats,
             };
-        });
-        let message = `Overall report across ${results.length} projects\n`;
-        for (const langStats of consolidated) {
-            message += formatLanguageStats(langStats);
-            message += "\n";
+        }).filter(s => s.stats.total > 0);
+        let message = `Totals across ${results.length} projects:\n`;
+        const sorted = _.sortBy(consolidated, s => -s.stats.total);
+        for (const langStats of sorted) {
+            message += `* ${formatLanguageStats(langStats)}\n`;
         }
         await ci.context.messageClient.respond(message);
     },
