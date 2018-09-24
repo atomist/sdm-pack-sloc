@@ -22,7 +22,6 @@ import {
 } from "@atomist/sdm";
 import { lineCountFingerprinter } from "./lib/codemetrics/CodeMetrics";
 import { SlocCommand } from "./lib/slocCommand";
-import { LanguageReportRequest } from "./lib/slocReport";
 
 export { CodeMetrics } from "./lib/codemetrics/CodeMetrics";
 
