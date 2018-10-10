@@ -17,7 +17,7 @@
 import {
     InMemoryProject,
     InMemoryProjectFile,
-} from "@atomist/sdm";
+} from "@atomist/automation-client";
 import * as assert from "power-assert";
 import {
     JavaLanguage,

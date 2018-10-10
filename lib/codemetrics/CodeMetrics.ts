@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
+import { RemoteRepoRef } from "@atomist/automation-client";
 import {
     FingerprinterRegistration,
     PushTest,
-    RemoteRepoRef,
     TypedFingerprint,
 } from "@atomist/sdm";
 import {
