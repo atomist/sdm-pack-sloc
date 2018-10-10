@@ -15,9 +15,9 @@
  */
 
 import {
-    projectUtils,
     Project,
     ProjectFile,
+    projectUtils,
 } from "@atomist/automation-client";
 import * as _ from "lodash";
 import * as sloc from "sloc";
