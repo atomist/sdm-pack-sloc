@@ -1,7 +1,7 @@
 # @atomist/sdm-pack-sloc
 
 [![atomist sdm goals](http://badge.atomist.com/T29E48P34/atomist/sdm-pack-sloc/51053400-0a11-4280-959d-7d2a1ae80344)](https://app.atomist.com/workspace/T29E48P34)
-[![npm version](https://img.shields.io/npm/v/@atomist/sdm-pack-sloc/next.svg)](https://www.npmjs.com/package/@atomist/sdm-pack-sloc/v/next)
+[![npm version](https://img.shields.io/npm/v/@atomist/sdm-pack-sloc.svg)](https://www.npmjs.com/package/@atomist/sdm-pack-sloc)
 
 [Atomist][atomist] software delivery machine (SDM) extension Pack for an Atomist SDM to integrate [sloc](https://www.npmjs.com/package/sloc).
 
