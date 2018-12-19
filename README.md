@@ -25,9 +25,12 @@ $ npm install @atomist/sdm-pack-sloc
 2. Install the support
 
 ```
-import { SlocSupport } from "@atomist/sdm-pack-sloc";
+import { codeMetrics } from "@atomist/sdm-pack-sloc";
 
-sdm.addExtensionPack(SlocSupport);
+sdm.addExtensionPacks(
+  ...
+  codeMetrics()
+ );
 ```
 
 3. Add configuration to your client configuration
