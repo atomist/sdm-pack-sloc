@@ -25,7 +25,7 @@ import { SlocCommand } from "./lib/slocCommand";
 
 export { CodeMetrics } from "./lib/codemetrics/CodeMetrics";
 
-export { LanguageReport, LanguagesReport, LanguageReportRequest } from "./lib/slocReport";
+export { LanguageReport, LanguagesReport, LanguageReportRequest, reportForLanguages } from "./lib/slocReport";
 
 /**
  * Extension pack to add codeMetrics commands to a machine
