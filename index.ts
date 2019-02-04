@@ -23,7 +23,7 @@ import {
 import { lineCountFingerprinter } from "./lib/codemetrics/CodeMetrics";
 import { SlocCommand } from "./lib/slocCommand";
 
-export { CodeMetrics } from "./lib/codemetrics/CodeMetrics";
+export { calculateCodeMetrics, CodeMetrics } from "./lib/codemetrics/CodeMetrics";
 
 export { LanguageReport, LanguagesReport, LanguageReportRequest, reportForLanguages } from "./lib/slocReport";
 
