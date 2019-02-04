@@ -14,10 +14,21 @@
  * limitations under the License.
  */
 
-import { Project, RemoteRepoRef } from "@atomist/automation-client";
-import { FingerprinterRegistration, PushTest, TypedFingerprint } from "@atomist/sdm";
+import {
+    Project,
+    RemoteRepoRef,
+} from "@atomist/automation-client";
+import {
+    FingerprinterRegistration,
+    PushTest,
+    TypedFingerprint,
+} from "@atomist/sdm";
 import { AllLanguages } from "../languages";
-import { CodeStats, LanguageReportRequest, reportForLanguages } from "../slocReport";
+import {
+    CodeStats,
+    LanguageReportRequest,
+    reportForLanguages,
+} from "../slocReport";
 
 const CodeMetricsFingerprintName = "CodeMetrics";
 
