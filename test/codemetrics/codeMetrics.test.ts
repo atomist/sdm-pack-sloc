@@ -15,10 +15,10 @@
  */
 
 import { InMemoryProject } from "@atomist/automation-client";
-import { calculateCodeMetrics } from "../../lib/codemetrics/CodeMetrics";
-import * as assert from "assert";
-import { AllLanguages } from "../../lib/languages";
 import { InMemoryFile } from "@atomist/automation-client/lib/project/mem/InMemoryFile";
+import * as assert from "assert";
+import { calculateCodeMetrics } from "../../lib/codemetrics/CodeMetrics";
+import { AllLanguages } from "../../lib/languages";
 
 describe("calculateCodeMetrics", () => {
 
