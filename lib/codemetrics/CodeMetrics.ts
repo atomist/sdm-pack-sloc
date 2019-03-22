@@ -71,10 +71,10 @@ export async function calculateCodeMetrics(p: Project,
         totalFiles: await p.totalFileCount(),
         files: report.relevantLanguageReports
             .map(r => r.fileReports.length)
-            .reduce((tot1, tot2) => tot1 + tot2),
+            .reduce((tot1, tot2) => tot1 + tot2, 0),
         lines: report.relevantLanguageReports
             .map(r => r.stats.total)
-            .reduce((tot1, tot2) => tot1 + tot2),
+            .reduce((tot1, tot2) => tot1 + tot2, 0),
     };
 }
 
