@@ -21,7 +21,8 @@ import {
 import * as assert from "power-assert";
 import {
     JavaLanguage,
-    ScalaLanguage, ShellLanguage,
+    ScalaLanguage,
+    ShellLanguage,
     TypeScriptLanguage,
     YamlLanguage,
 } from "../lib/languages";

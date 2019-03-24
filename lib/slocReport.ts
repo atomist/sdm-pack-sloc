@@ -21,7 +21,10 @@ import {
 } from "@atomist/automation-client";
 import * as _ from "lodash";
 import * as sloc from "sloc";
-import { AllLanguages, ShellLanguage } from "./languages";
+import {
+    AllLanguages,
+    ShellLanguage,
+} from "./languages";
 
 export interface Language {
 
