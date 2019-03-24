@@ -21,7 +21,7 @@ import {
 import * as assert from "power-assert";
 import {
     JavaLanguage,
-    ScalaLanguage,
+    ScalaLanguage, ShellLanguage,
     TypeScriptLanguage,
     YamlLanguage,
 } from "../lib/languages";
@@ -61,6 +61,16 @@ describe("reportForLanguage", () => {
         const f0 = r.fileReports[0];
         assert.equal(f0.stats.total, 1);
         assert.equal(f0.stats.source, 1);
+    });
+
+    it("should work on Bash", async () => {
+        const p = InMemoryProject.of(new InMemoryProjectFile("thing.sh", "ls\n#This is a thing\nmkdir foo"));
+        const r = await reportForLanguage(p, {language: ShellLanguage });
+        assert.equal(r.fileReports.length, 1);
+        const f0 = r.fileReports[0];
+        assert.equal(f0.stats.total, 3);
+        assert.equal(f0.stats.source, 3);
+        assert.equal(f0.stats.comment, 1);
     });
 
     it("should work on Java and TypeScript", async () => {

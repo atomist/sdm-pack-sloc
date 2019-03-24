@@ -21,7 +21,7 @@ import {
 } from "@atomist/automation-client";
 import * as _ from "lodash";
 import * as sloc from "sloc";
-import { AllLanguages } from "./languages";
+import { AllLanguages, ShellLanguage } from "./languages";
 
 export interface Language {
 
@@ -150,8 +150,7 @@ export async function reportForLanguage(p: Project, request: LanguageReportReque
     const extension = request.language.extensions[0];
     const globs = request.language.extensions.map(ext => `**/*.${ext}`);
     const fileReports = await projectUtils.gatherFromFiles<FileReport>(p, globs, async f => {
-        const content = await f.getContent();
-        const stats = sloc(content, extension);
+        const stats = getStats(await f.getContent(), request.language, extension);
         return {
             stats,
             file: f,
@@ -165,4 +164,32 @@ export async function reportForLanguages(p: Project,
                                          requests: LanguageReportRequest[] = AllLanguages.map(language => ({ language }))): Promise<LanguagesReport> {
     const languageReports = await Promise.all(requests.map(r => reportForLanguage(p, r)));
     return new LanguagesReport(languageReports);
+}
+
+function getStats(content: string, language: Language, extension: string): CodeStats {
+    // We handle some things ourselves
+    if (language === ShellLanguage) {
+        return computeStats(content, language, l => l.trim().startsWith("#"));
+    }
+    return sloc(content, extension);
+}
+
+/**
+ * Compiute stats for the given content, given a way of determining comment lines
+ * @param {string} content
+ * @param {Language} language
+ * @param {(s: string) => boolean} lineIsComment
+ * @return {CodeStats}
+ */
+export function computeStats(content: string, language: Language, lineIsComment: (s: string) => boolean): CodeStats {
+    const lines = (content || "").split("\n");
+    const single = lines.filter(lineIsComment).length;
+    return {
+        total: lines.length,
+        block: 0,
+        comment: single,
+        language,
+        single,
+        source: lines.length,
+    };
 }
