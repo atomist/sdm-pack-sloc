@@ -20,7 +20,8 @@ import {
 } from "@atomist/automation-client";
 import * as assert from "power-assert";
 import {
-    JavaLanguage, PowerShellLanguage,
+    JavaLanguage,
+    PowerShellLanguage,
     ScalaLanguage,
     ShellLanguage,
     TypeScriptLanguage,

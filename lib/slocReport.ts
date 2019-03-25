@@ -22,7 +22,8 @@ import {
 import * as _ from "lodash";
 import * as sloc from "sloc";
 import {
-    AllLanguages, PowerShellLanguage,
+    AllLanguages,
+    PowerShellLanguage,
     ShellLanguage,
 } from "./languages";
 
