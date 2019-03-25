@@ -22,7 +22,7 @@ import {
 import * as _ from "lodash";
 import * as sloc from "sloc";
 import {
-    AllLanguages,
+    AllLanguages, PowerShellLanguage,
     ShellLanguage,
 } from "./languages";
 
@@ -170,15 +170,19 @@ export async function reportForLanguages(p: Project,
 }
 
 function getStats(content: string, language: Language, extension: string): CodeStats {
-    // We handle some things ourselves
-    if (language === ShellLanguage) {
-        return computeStats(content, language, l => l.trim().startsWith("#"));
+    // We handle some languages ourselves
+    switch (language.name) {
+        case ShellLanguage.name:
+            return computeStats(content, language, l => l.trim().startsWith("#"));
+        case PowerShellLanguage.name:
+            return computeStats(content, language, l => l.trim().startsWith("#"));
+        default:
+            return sloc(content, extension);
     }
-    return sloc(content, extension);
 }
 
 /**
- * Compiute stats for the given content, given a way of determining comment lines
+ * Compute stats for the given content, given a way of determining comment lines
  * @param {string} content
  * @param {Language} language
  * @param {(s: string) => boolean} lineIsComment

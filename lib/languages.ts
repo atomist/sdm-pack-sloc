@@ -24,7 +24,8 @@ export const PythonLanguage: Language = {name: "Python", extensions: ["py"]};
 export const RustLanguage: Language = {name: "Rust", extensions: ["rs"]};
 export const GoLanguage: Language = {name: "Go", extensions: ["go"]};
 
-export const ShellLanguage: Language = {name: "Shell", extensions: ["sh"]};
+export const ShellLanguage: Language = {name: "Shell", extensions: ["sh", "bash"]};
+export const PowerShellLanguage: Language = {name: "PowerShell", extensions: ["ps1"]};
 
 export const TypeScriptLanguage: Language = {name: "TypeScript", extensions: ["ts"]};
 export const JavaScriptLanguage: Language = {name: "JavaScript", extensions: ["js"]};
@@ -37,7 +38,7 @@ export const YamlLanguage: Language = {name: "YAML", extensions: [ "yaml", "yml"
  */
 export const AllLanguages = [
     JavaLanguage, KotlinLanguage, ClojureLanguage, ScalaLanguage,
-    ShellLanguage,
+    PowerShellLanguage, ShellLanguage,
     TypeScriptLanguage, JavaScriptLanguage,
     PythonLanguage, RustLanguage,
     GoLanguage, YamlLanguage,
