@@ -82,7 +82,8 @@ export interface LanguageStats {
  */
 export class LanguageReport implements LanguageStats {
 
-    constructor(public language: Language, public fileReports: FileReport[]) {
+    constructor(public readonly language: Language,
+                public readonly fileReports: FileReport[]) {
     }
 
     /**
@@ -104,11 +105,11 @@ export class LanguageReport implements LanguageStats {
 export function consolidate(language: Language, stats: CodeStats[]): CodeStats {
     return {
         language,
-        total: _.sum(stats.map(r => r.total)),
-        source: _.sum(stats.map(r => r.source)),
-        comment: _.sum(stats.map(r => r.comment)),
-        single: _.sum(stats.map(r => r.single)),
-        block: _.sum(stats.map(r => r.block)),
+        total: _.sum(stats.filter(s => s.language.name === language.name).map(r => r.total)),
+        source: _.sum(stats.filter(s => s.language.name === language.name).map(r => r.source)),
+        comment: _.sum(stats.filter(s => s.language.name === language.name).map(r => r.comment)),
+        single: _.sum(stats.filter(s => s.language.name === language.name).map(r => r.single)),
+        block: _.sum(stats.filter(s => s.language.name === language.name).map(r => r.block)),
     };
 }
 
@@ -178,7 +179,10 @@ function getStats(content: string, language: Language, extension: string): CodeS
         case PowerShellLanguage.name:
             return computeStats(content, language, l => l.trim().startsWith("#"));
         default:
-            return sloc(content, extension);
+            return {
+                language,
+                ...sloc(content, extension),
+            };
     }
 }
 
