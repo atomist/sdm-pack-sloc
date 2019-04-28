@@ -15,8 +15,14 @@
  */
 
 import * as assert from "power-assert";
-import { GoLanguage, JavaLanguage } from "../../lib/languages";
-import { CodeStats, consolidate } from "../../lib/slocReport";
+import {
+    GoLanguage,
+    JavaLanguage,
+} from "../../lib/languages";
+import {
+    CodeStats,
+    consolidate,
+} from "../../lib/slocReport";
 
 describe("slocReport", () => {
 
