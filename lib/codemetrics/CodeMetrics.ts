@@ -25,7 +25,7 @@ import {
 } from "@atomist/sdm";
 import { AllLanguages } from "../languages";
 import {
-    CodeStats,
+    CodeStats, isLanguageReportRequest, Language,
     LanguageReportRequest,
     reportForLanguages,
 } from "../slocReport";
@@ -57,8 +57,9 @@ export interface CodeMetrics {
  * @return {Promise<CodeMetrics>}
  */
 export async function calculateCodeMetrics(p: Project,
-                                           requests: LanguageReportRequest[] = AllLanguages.map(language => ({ language }))): Promise<CodeMetrics> {
-    const report = await reportForLanguages(p, requests);
+                                           requests: Array<LanguageReportRequest | Language> = AllLanguages): Promise<CodeMetrics> {
+    const lrRequests = requests.map(r => isLanguageReportRequest(r) ? r : { language: r });
+    const report = await reportForLanguages(p, lrRequests);
     return {
         project: {
             url: (p.id as RemoteRepoRef).url,

@@ -140,9 +140,16 @@ export interface LanguageReportRequest {
     language: Language;
 
     /**
-     * Narrow down search--eg to exclude test
+     * Glob patterns to exlclude to narrow down search--eg to exclude test or vendor directories
      */
-    glob?: string;
+    excludes?: string[];
+}
+
+export type LanguageReportRequestable = Language | LanguageReportRequest;
+
+export function isLanguageReportRequest(a: LanguageReportRequestable): a is LanguageReportRequest {
+    const maybe = a as LanguageReportRequest;
+    return !!maybe.language;
 }
 
 /**
@@ -151,22 +158,26 @@ export interface LanguageReportRequest {
  * @param {string} request
  * @return {Promise<LanguageReport>}
  */
-export async function reportForLanguage(p: Project, request: LanguageReportRequest): Promise<LanguageReport> {
-    const extension = request.language.extensions[0];
-    const globs = request.language.extensions.map(ext => `**/*.${ext}`);
+export async function reportForLanguage(p: Project, request: LanguageReportRequestable): Promise<LanguageReport> {
+    const lrr = isLanguageReportRequest(request) ? request : { language: request};
+    const extension = lrr.language.extensions[0];
+    const globs = lrr.language.extensions.map(ext => `**/*.${ext}`);
+    if (!!lrr.excludes) {
+        globs.push(...lrr.excludes.map(e => "!" + e));
+    }
     const fileReports = await projectUtils.gatherFromFiles<FileReport>(p, globs, async f => {
-        const stats = getStats(await f.getContent(), request.language, extension);
+        const stats = getStats(await f.getContent(), lrr.language, extension);
         return {
             stats,
             file: f,
-            language: request.language,
+            language: lrr.language,
         };
     });
-    return new LanguageReport(request.language, fileReports);
+    return new LanguageReport(lrr.language, fileReports);
 }
 
 export async function reportForLanguages(p: Project,
-                                         requests: LanguageReportRequest[] = AllLanguages.map(language => ({ language }))): Promise<LanguagesReport> {
+                                         requests: LanguageReportRequestable[] = AllLanguages): Promise<LanguagesReport> {
     const languageReports = await Promise.all(requests.map(r => reportForLanguage(p, r)));
     return new LanguagesReport(languageReports);
 }

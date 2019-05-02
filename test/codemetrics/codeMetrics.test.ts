@@ -35,7 +35,15 @@ describe("calculateCodeMetrics", () => {
         assert.strictEqual(r.languages.length, AllLanguages.length);
         r.languages.filter(l => l.language.extensions[0] !== "java").forEach(l => assert.strictEqual(l.total, 0));
         r.languages.filter(l => l.language.extensions[0] === "java").forEach(l => assert.strictEqual(l.total, 1));
+    });
 
+    it("should honor Go vendoring", async () => {
+        const p = InMemoryProject.of(
+            new InMemoryFile("thing.go", "type ReferenceCallback func(path string) spec.Ref\n"),
+            new InMemoryFile("vendor/someone/thing.go", "type ReferenceCallback func(path string) spec.Ref\n"),
+        );
+        const r = await calculateCodeMetrics(p);
+        r.languages.filter(l => l.language.extensions[0] === "go").forEach(l => assert.strictEqual(l.total, 1));
     });
 
 });

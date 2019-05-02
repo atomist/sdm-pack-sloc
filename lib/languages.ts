@@ -14,32 +14,33 @@
  * limitations under the License.
  */
 
-import { Language } from "./slocReport";
+import { Language, LanguageReportRequestable } from "./slocReport";
 
-export const JavaLanguage: Language = {name: "Java", extensions: ["java"]};
-export const KotlinLanguage: Language = {name: "Kotlin", extensions: ["kt"]};
-export const ClojureLanguage: Language = {name: "Clojure", extensions: ["clj"]};
-export const ScalaLanguage: Language = {name: "Scala", extensions: ["scala"]};
-export const PythonLanguage: Language = {name: "Python", extensions: ["py"]};
-export const RustLanguage: Language = {name: "Rust", extensions: ["rs"]};
-export const GoLanguage: Language = {name: "Go", extensions: ["go"]};
+export const JavaLanguage: Language = { name: "Java", extensions: ["java"] };
+export const KotlinLanguage: Language = { name: "Kotlin", extensions: ["kt"] };
+export const ClojureLanguage: Language = { name: "Clojure", extensions: ["clj"] };
+export const ScalaLanguage: Language = { name: "Scala", extensions: ["scala"] };
+export const PythonLanguage: Language = { name: "Python", extensions: ["py"] };
+export const RustLanguage: Language = { name: "Rust", extensions: ["rs"] };
+export const GoLanguage: Language = { name: "Go", extensions: ["go"] };
 
-export const ShellLanguage: Language = {name: "Shell", extensions: ["sh", "bash"]};
-export const PowerShellLanguage: Language = {name: "PowerShell", extensions: ["ps1"]};
+export const ShellLanguage: Language = { name: "Shell", extensions: ["sh", "bash"] };
+export const PowerShellLanguage: Language = { name: "PowerShell", extensions: ["ps1"] };
 
-export const TypeScriptLanguage: Language = {name: "TypeScript", extensions: ["ts"]};
-export const JavaScriptLanguage: Language = {name: "JavaScript", extensions: ["js"]};
+export const TypeScriptLanguage: Language = { name: "TypeScript", extensions: ["ts"] };
+export const JavaScriptLanguage: Language = { name: "JavaScript", extensions: ["js"] };
 
-export const YamlLanguage: Language = {name: "YAML", extensions: [ "yaml", "yml"]};
+export const YamlLanguage: Language = { name: "YAML", extensions: ["yaml", "yml"] };
 
 /**
  * All languages for which we can compute statistics
  * @type {Language[]}
  */
-export const AllLanguages = [
+export const AllLanguages: LanguageReportRequestable[] = [
     JavaLanguage, KotlinLanguage, ClojureLanguage, ScalaLanguage,
     PowerShellLanguage, ShellLanguage,
     TypeScriptLanguage, JavaScriptLanguage,
     PythonLanguage, RustLanguage,
-    GoLanguage, YamlLanguage,
+    { language: GoLanguage, excludes: ["vendor/**"] },
+    YamlLanguage,
 ];
