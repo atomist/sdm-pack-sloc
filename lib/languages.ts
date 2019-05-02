@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-import { Language, LanguageReportRequestable } from "./slocReport";
+import {
+    Language,
+    LanguageReportRequestable,
+} from "./slocReport";
 
 export const JavaLanguage: Language = { name: "Java", extensions: ["java"] };
 export const KotlinLanguage: Language = { name: "Kotlin", extensions: ["kt"] };

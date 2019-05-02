@@ -25,7 +25,9 @@ import {
 } from "@atomist/sdm";
 import { AllLanguages } from "../languages";
 import {
-    CodeStats, isLanguageReportRequest, Language,
+    CodeStats,
+    isLanguageReportRequest,
+    Language,
     LanguageReportRequest,
     reportForLanguages,
 } from "../slocReport";
