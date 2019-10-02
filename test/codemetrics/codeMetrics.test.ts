@@ -30,11 +30,20 @@ describe("calculateCodeMetrics", () => {
     });
 
     it("should calculate for Java project", async () => {
-        const p = InMemoryProject.of(new InMemoryFile("Thing.java", "public class Thing {}"));
+        const p = InMemoryProject.of(
+            { path: "Thing.java", content: "public class Thing {}"},
+            { path: "Thing2.java", content: `public class Thing2 {
+    public void doSomething() {}
+}
+`},
+        );
         const r = await calculateCodeMetrics(p);
         assert.strictEqual(r.languages.length, AllLanguages.length);
         r.languages.filter(l => l.language.extensions[0] !== "java").forEach(l => assert.strictEqual(l.total, 0));
-        r.languages.filter(l => l.language.extensions[0] === "java").forEach(l => assert.strictEqual(l.total, 1));
+        r.languages.filter(l => l.language.extensions[0] === "java").forEach(l => assert.strictEqual(l.total, 4));
+        assert.strictEqual(r.top20BiggestFiles.length, 2);
+        assert.deepStrictEqual(r.top20BiggestFiles[0], { path: "Thing2.java", lines: 3});
+        assert.deepStrictEqual(r.top20BiggestFiles[1], { path: "Thing.java", lines: 1});
     });
 
     it("should honor Go vendoring", async () => {

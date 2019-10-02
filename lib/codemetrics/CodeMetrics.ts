@@ -19,10 +19,10 @@ import {
     RemoteRepoRef,
 } from "@atomist/automation-client";
 import {
-    FingerprinterRegistration,
-    PushTest,
-    TypedFingerprint,
-} from "@atomist/sdm";
+    Aspect,
+    fingerprintOf,
+} from "@atomist/sdm-pack-fingerprint";
+import * as _ from "lodash";
 import { AllLanguages } from "../languages";
 import {
     CodeStats,
@@ -32,10 +32,8 @@ import {
     reportForLanguages,
 } from "../slocReport";
 
-const CodeMetricsFingerprintName = "CodeMetrics";
-
 /**
- * Structure tructure that can persisted: For example, written as a fingerprint after each commit
+ * Structure that can persisted: For example, written as a fingerprint after each commit
  */
 export interface CodeMetrics {
 
@@ -49,6 +47,7 @@ export interface CodeMetrics {
      * Lines recognized
      */
     lines: number;
+    top20BiggestFiles: Array<{path: string, lines: number}>;
     files: number;
 }
 
@@ -62,6 +61,11 @@ export async function calculateCodeMetrics(p: Project,
                                            requests: Array<LanguageReportRequest | Language> = AllLanguages): Promise<CodeMetrics> {
     const lrRequests = requests.map(r => isLanguageReportRequest(r) ? r : { language: r });
     const report = await reportForLanguages(p, lrRequests);
+    const topFileLines = _.flatten(report.languageReports
+        .map(r => r.fileReports))
+        .map(fr => ({path: fr.file.path, lines: fr.stats.total}))
+        .sort((a, b) => a.lines - b.lines)
+        .reverse();
     return {
         project: {
             url: (p.id as RemoteRepoRef).url,
@@ -75,19 +79,9 @@ export async function calculateCodeMetrics(p: Project,
         files: report.relevantLanguageReports
             .map(r => r.fileReports.length)
             .reduce((tot1, tot2) => tot1 + tot2, 0),
+        top20BiggestFiles: topFileLines.slice(0, topFileLines.length > 100 ? 100 : topFileLines.length),
         lines: report.relevantLanguageReports
             .map(r => r.stats.total)
             .reduce((tot1, tot2) => tot1 + tot2, 0),
-    };
-}
-
-export function lineCountFingerprinter(pushTest: PushTest): FingerprinterRegistration {
-    return {
-        name: CodeMetricsFingerprintName,
-        pushTest,
-        action: async pu => {
-            const codeMetrics = await calculateCodeMetrics(pu.project);
-            return new TypedFingerprint(CodeMetricsFingerprintName, "lc", "0.1.0", codeMetrics);
-        },
     };
 }

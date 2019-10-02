@@ -1,31 +1,35 @@
 {
   "compilerOptions": {
     "newLine": "LF",
-    "target": "ES6",
+    "target": "ES2016",
     "module": "CommonJS",
     "moduleResolution": "Node",
-    "resolveJsonModule": true,
-    "jsx": "React",
+    "jsx": "react",
     "declaration": true,
+    "declarationMap": true,
     "sourceMap": true,
-    "rootDir": ".",
     "lib": [
-      "DOM",
-      "ES2017",
-      "DOM.Iterable",
-      "ScriptHost",
+      "dom",
+      "es2017",
+      "dom.iterable",
+      "scripthost",
       "esnext.asynciterable"
     ],
-    "strict": true,
-    "noImplicitAny": false,
-    "noImplicitThis": false,
+    "strict": false,
     "strictNullChecks": false,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": false,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
+  "include": [
+    "index.ts",
+    "lib/**/*.ts",
+    "test/**/*.ts"
+  ],
   "exclude": [
-    "build",
-    "node_modules"
+    ".#*"
   ],
   "compileOnSave": true,
   "buildOnSave": false,
