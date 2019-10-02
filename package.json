@@ -29,13 +29,13 @@
     "sloc": "^0.2.0"
   },
   "peerDependencies": {
-    "@atomist/automation-client": ">=1.8.0",
-    "@atomist/sdm": ">=1.8.0",
+    "@atomist/automation-client": "^1.7.0",
+    "@atomist/sdm": "^1.7.0",
     "@atomist/sdm-pack-fingerprint": ">=5.0.0"
   },
   "devDependencies": {
-    "@atomist/automation-client": "^1.8.0-master.20191001022338",
-    "@atomist/sdm": "^1.8.0-master.20190926164141",
+    "@atomist/automation-client": "^1.7.0",
+    "@atomist/sdm": "^1.7.0",
     "@atomist/sdm-pack-fingerprint": "^5.0.1-master.20190929225757",
     "@types/mocha": "^5.2.7",
     "@types/power-assert": "^1.5.0",
