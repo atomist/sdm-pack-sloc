@@ -24,7 +24,11 @@ export { calculateCodeMetrics, CodeMetrics } from "./lib/codemetrics/CodeMetrics
 
 export { LanguageReport, LanguagesReport, LanguageReportRequest, reportForLanguages } from "./lib/slocReport";
 
-export { CodeMetricsAspectType, CodeMetricsAspect } from "./lib/aspect/codeMetricsAspect";
+export {
+    CodeMetricsType,
+    CodeMetricsAspect,
+    isCodeMetricsFingerprint,
+} from "./lib/aspect/codeMetricsAspect";
 
 /**
  * Extension pack to add codeMetrics commands to a machine

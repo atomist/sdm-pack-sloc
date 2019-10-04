@@ -14,21 +14,61 @@
  * limitations under the License.
  */
 
+import { Project } from "@atomist/automation-client";
 import {
     Aspect,
-    fingerprintOf,
+    FP,
+    sha256,
 } from "@atomist/sdm-pack-fingerprint";
 import {
     calculateCodeMetrics,
     CodeMetrics,
 } from "../codemetrics/CodeMetrics";
 
-export const CodeMetricsAspectType = "CodeMetrics";
-export const CodeMetricsAspect: Aspect<CodeMetrics> = {
-    name: CodeMetricsAspectType,
-    displayName: "Code metrics",
+export type CodeMetricsData = Pick<CodeMetrics,
+    "languages" | "totalFiles" | "lines" | "files" | "top20BiggestFiles">;
+
+/**
+ * Scan for lines of code in particular programming languages.
+ * Uses @atomist/sdm-pack-sloc
+ */
+async function scanForCodeMetrics(p: Project): Promise<CodeMetricsData> {
+    const codeMetrics = await calculateCodeMetrics(p);
+    const relevantLanguages = codeMetrics.languages.filter(l => l.total > 0);
+    return {
+        languages: relevantLanguages,
+        files: codeMetrics.files,
+        lines: codeMetrics.lines,
+        totalFiles: codeMetrics.totalFiles,
+        top20BiggestFiles: codeMetrics.top20BiggestFiles,
+    };
+}
+
+export const CodeMetricsType = "code-metrics";
+
+export function isCodeMetricsFingerprint(fp: FP): fp is FP<CodeMetricsData> {
+    const maybe = fp;
+    return !!maybe && maybe.type === CodeMetricsType && maybe.data.languages !== undefined;
+}
+
+export const CodeMetricsAspect: Aspect<CodeMetricsData> = {
+    name: CodeMetricsType,
+    // Suppress display
+    displayName: undefined,
+    baseOnly: true,
     extract: async p => {
-        const data = await calculateCodeMetrics(p);
-        return fingerprintOf({type: CodeMetricsAspectType, data});
+        const data = await scanForCodeMetrics(p);
+        return {
+            name: CodeMetricsType,
+            type: CodeMetricsType,
+            data,
+            sha: sha256(JSON.stringify(data)),
+        };
+    },
+    stats: {
+        defaultStatStatus: {
+            entropy: false,
+        },
+        basicStatsPath: "lines",
     },
 };
